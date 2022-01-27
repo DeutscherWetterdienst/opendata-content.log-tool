@@ -10,7 +10,8 @@ PATTERN="/icon-d2/grib/03/t_2m/.*_icosahedral_"
 LAST_RUN_AT=$(date -ud 00:00 -Ihours)
 
 wget $CONTENT_LOG_URL -O content.log.bz2
-bzgrep $PATTERN content.log.bz2 | ./get_updated_files.py -b $CONTENT_LOG_URL -u $LAST_RUN_AT > updated_files.txt
+bzgrep $PATTERN content.log.bz2 > my_content.log
+./get_updated_files.py -b $CONTENT_LOG_URL -u $LAST_RUN_AT my_content.log > updated_files.txt
 wget -i updated_files.txt
 ```
 
@@ -27,7 +28,9 @@ to process the data reference time that is contained in the filenames instead.
 
 ```
 $ ./get_updated_files.py --help
-usage: get_updated_files.py [-h] --updated-since UPDATED_SINCE [--url-base URL_BASE] [--min-delta MIN_DELTA] [--version] [CONTENT_LOG_FILE [CONTENT_LOG_FILE ...]]
+usage: get_updated_files.py [-h] --updated-since UPDATED_SINCE [--url-base URL_BASE]
+                            [--min-delta MIN_DELTA] [--version]
+                            [CONTENT_LOG_FILE [CONTENT_LOG_FILE ...]]
 
 Filters paths of a DWD Open Data content.log file for entries that have been updated.
 
@@ -39,8 +42,11 @@ optional arguments:
   --updated-since UPDATED_SINCE, -u UPDATED_SINCE
                         last time files were checked for updates
   --url-base URL_BASE, -b URL_BASE
-                        resolve the paths taken from content.log relative to the given base URL; put the URL of the content.log.bz2 here to end up with correct hyperlinks to DWD's Open Data
+                        resolve the paths taken from content.log relative to the given
+                        base URL; put the URL of the content.log.bz2 here to end up with
+                        correct hyperlinks to DWD's Open Data
   --min-delta MIN_DELTA, -d MIN_DELTA
-                        minimum number of seconds a file needs to be younger than UPDATED_SINCE (default: 60)
+                        minimum number of seconds a file needs to be younger than
+                        UPDATED_SINCE (default: 60)
   --version             show program's version number and exit
 ```
