@@ -5,15 +5,15 @@ A reference implementation for processing the content.log files found at opendat
 Example usage:
 
 ```
-wget https://opendata.dwd.de/weather/nwp/content.log.bz2
+CONTENT_LOG_URL=https://opendata.dwd.de/weather/nwp/content.log.bz2
+wget $CONTENT_LOG_URL
 bunzip2 content.log.bz2
-echo "./icon-d2/grib/*/t_2m/*" > wildcards.txt
-./get_updated_files.py -w wildcards.txt 2022-01-26T03:00 > updated_files.txt
+grep "/icon-d2/grib/../t_2m/.*_icosahedral_.*\.grib2\.bz2" content.log > reduced_content.log
+./get_updated_files.py -f reduced_content.log -b $CONTENT_LOG_URL 2022-01-27T03:00 > updated_files.txt
 ```
 
-The produced file `updated_files.txt` will hold all pathnames as given by content.log that are updated since
-`2022-01-26 03:00:00 UTC` according to the file's modification date. Remember that those paths are relative to the
-directory the `content.log.bz2` was in, in this case https://opendata.dwd.de/weather/nwp/.
+The produced file `updated_files.txt` will hold hyperlinks to files that are updated since the given date-time according
+to the file's modification date found in content.log.
 
 Also mind that there are multiple servers behind https://opendata.dwd.de which might not be exactly in sync with each
 other regarding file modification timestamps. Look into the code of `get_updated_files.py` for a suggestion on how to
