@@ -5,7 +5,7 @@ import datetime
 import sys
 from urllib.parse import urljoin
 
-__VERSION__ = "1.1.0"
+__VERSION__ = "2.0.0"
 
 arg_parser = argparse.ArgumentParser(description="Filters paths of a DWD Open Data content.log file "
                                                  "for entries that have been updated.")
