@@ -3,7 +3,7 @@
 import argparse
 import datetime
 import sys
-from urllib.parse import urljoin
+from os.path import join
 
 __VERSION__ = "2.0.0"
 
@@ -43,7 +43,7 @@ def main():
             # which might not be exactly in sync with each other
             if (changed_at - updated_since).total_seconds() > args.min_delta:
                 if args.url_base:
-                    print(urljoin(args.url_base, path))
+                    print(join(args.url_base, path))
                 else:
                     print(path)
 
